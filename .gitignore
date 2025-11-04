@@ -1,0 +1,99 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# Environment
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Data files (usually large)
+data/raw/*
+data/processed/*
+datasets/
+*.csv
+!**/sample*.csv
+*.pkl
+*.pickle
+*.h5
+*.hdf5
+*.parquet
+
+# Model files and checkpoints
+models/
+checkpoints/
+*.pth
+*.pt
+*.ckpt
+saved_models/
+weights/
+
+# Logs and outputs
+*.log
+logs/
+wandb/
+mlruns/
+outputs/
+results/
+
+# Docker (optional - you may want to keep these)
+# Dockerfile
+# docker-compose.yml
+
+# Mac OS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Large media files (if doing computer vision)
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# Compressed files
+*.zip
+*.tar.gz
+*.rar
+!**/data.zip
+
+# Secrets (NEVER commit these!)
+*.pem
+*.key
+secrets/
+.secrets
+credentials.json
+
+# Ignore all data directories but keep structure
+data/*
+!data/.gitkeep
+!data/README.md
