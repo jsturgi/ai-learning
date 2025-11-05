@@ -55,3 +55,9 @@ Feeling excited and motivated!
 - [x] Extended Vector class with normalize, angle, projection
 - [x] Journal entry written with reflections
 - [x] Can explain: "What is a vector?" in plain English to a non-technical person
+
+# Day 2 11/5/2025
+## Roadmap Version 1.4
+Added Multiple Language implementations (optional)
+## Time Spent
+- Theory block: 5:50
