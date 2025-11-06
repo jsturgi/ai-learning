@@ -61,4 +61,5 @@ Feeling excited and motivated!
 Added Multiple Language implementations (optional)
 ## Time Spent
 - Theory block: 6:30
--
+- Implementation: 1:42
+
