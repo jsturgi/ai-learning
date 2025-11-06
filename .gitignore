@@ -98,5 +98,7 @@ data/*
 !data/.gitkeep
 !data/README.md
 
+#ignore trash
+*.trashinfo
 
 

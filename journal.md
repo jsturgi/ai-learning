@@ -60,4 +60,5 @@ Feeling excited and motivated!
 ## Roadmap Version 1.4
 Added Multiple Language implementations (optional)
 ## Time Spent
-- Theory block: 5:50
+- Theory block: 6:30
+-
