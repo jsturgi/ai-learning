@@ -61,5 +61,13 @@ Feeling excited and motivated!
 Added Multiple Language implementations (optional)
 ## Time Spent
 - Theory block: 6:30
-- Implementation: 1:42
+- Implementation: 2:15
+
+# Day 3 11/7/2025
+## Roadmap Version 1.4
+## Time Spent
+- Theory: 1:30
+## Foundational Math Study Day
+- 3:15 - determinants/eigenvalues
+- 6:00 - orthogonality
 
