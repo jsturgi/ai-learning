@@ -68,6 +68,25 @@ Added Multiple Language implementations (optional)
 ## Time Spent
 - Theory: 1:30
 ## Foundational Math Study Day
-- 3:15 - determinants/eigenvalues
-- 6:00 - orthogonality
+- 3:00 - determinants/eigenvalues
+- 4:00 - orthogonality
+# Day 4 11/8/2025
+## Foundational Math Study Day 2
+- 1:00 - Determinants
+- 2:00 - Orthogonality
+## Schedule Outlier
+- Called into work 2 hours early, cutting into study time.
+
+# Day 5-6 11/9-10/2025
+- Very hectic weekend. Not able to get much done. Worked 32 hours over a 48 period Saturday night - Monday morning.  1 hour of sleep between a 12 hour close into a 12 hour open.  Going to get back on track.
+Theory:
+Determinants: :50
+SVA: 1:20
+Total Time: 2:10
+# Day 7 11/11
+Theory: 
+SVA: 2:45
+
+
+Week 1 Recap:
 
