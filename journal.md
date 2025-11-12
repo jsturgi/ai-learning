@@ -1,4 +1,4 @@
-# Day 1.5 11/4/2025
+# Day 1 - Finished 11/4/2025
 ## Roadmap Version 1.3
 
 ## What I learned today:
@@ -56,14 +56,14 @@ Feeling excited and motivated!
 - [x] Journal entry written with reflections
 - [x] Can explain: "What is a vector?" in plain English to a non-technical person
 
-# Day 2 11/5/2025
+#  11/5/2025
 ## Roadmap Version 1.4
 Added Multiple Language implementations (optional)
 ## Time Spent
 - Theory block: 6:30
 - Implementation: 2:15
 
-# Day 3 11/7/2025
+# 11/7/2025
 ## Roadmap Version 1.4
 ## Time Spent
 - Theory: 1:30
@@ -77,12 +77,13 @@ Added Multiple Language implementations (optional)
 ## Schedule Outlier
 - Called into work 2 hours early, cutting into study time.
 
-# Day 5-6 11/9-10/2025
+# 11/9-10/2025
 - Very hectic weekend. Not able to get much done. Worked 32 hours over a 48 period Saturday night - Monday morning.  1 hour of sleep between a 12 hour close into a 12 hour open.  Going to get back on track.
 Theory:
 Determinants: :50
 SVA: 1:20
 Total Time: 2:10
+
 # Day 7 11/11
 Theory: 
 SVA: 2:45
@@ -159,7 +160,7 @@ An eigenvector is a vector that stays on its own line (same or opposite directio
 A transformation is reversible when the determinant of the transformation is nonzero. This is because when the determinant is 0, the transformation will result in going down a dimension, meaning we lose the information required to describe the original matrix in its original dimensional space.  When the determinant is nonzero, we retain the information required to revert to its original form. If we scale by (2,3) we can still return to our original state by scaling (1/2,1/3).
 
 ## Time: 14.5 hours
-```
+
 
 ---
 
@@ -174,4 +175,12 @@ A transformation is reversible when the determinant of the transformation is non
 - [x] Can explain matrix-vector multiplication geometrically
 - [x] Implemented matrix multiplication (composition) and tested non-commutativity
 - [x] Journal entry completed with geometric insights
+
+# 11/12/2025
+
+## Time Spent:
+- Implementation: 2:08
+## Progress
+- Finished Day 2 Implementations + Journal entries
+- Started challenge implementations
 
