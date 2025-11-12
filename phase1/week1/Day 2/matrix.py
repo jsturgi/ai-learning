@@ -222,3 +222,30 @@ class Matrix:
             >>> Sh.multiply_vector(v)  # Returns Vector([1, 1])
         """
         return Matrix([[1, shear_factor], [0, 1]])
+
+def determinant_2x2(matrix):
+        """
+        Calculate determinant of a 2x2 matrix.
+
+        Geometric Meaning: The determinant tells you how much the 
+        transformation scales AREA. If det=2, areas double. If det=0.5,
+        areas are halved. If det=0, space collapses to a line!
+
+        Args:
+            matrix: 2x2
+
+        Returns:
+            Float representing the area scaling factor
+
+        Formula:
+            For matrix [[a, b], [c,d]]:
+            det = a*d - b*c
+        Example:
+            >>> M = Matrix.scaling(2, 3)  # Scale x by 2, y by 3
+            >>> determinant_2x2(M)  # Returns 6
+            # Areas are scaled by factor of 6!
+        """
+        a,b = matrix.data[0]
+        c,d = matrix.data[1]
+
+        return a*d - b*c
