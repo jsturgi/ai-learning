@@ -110,6 +110,40 @@ class Matrix:
 
         result = [vector.dot(Vector(row)) for row in self.data]
         return Vector(result)
+    
+    def multiply_matrix(self, other: 'Matrix') -> 'Matrix':
+        """ 
+        Applies a transformation to the matrix.
+
+        Geometric interpretation: The returned matrix represents a composed transformation
+        that first applies other, then applies self.
+
+        Mathematical: Each component of the Matrix is a dot product of the original matrix's 
+        rows and the transformation matrix's columns.
+
+        Order: Order matters here. self * other != other * self.
+
+        Raises: ValueError: If Matrix Inner Dimensions don't match: mxn nxm works, nxm nxm does not.
+
+        Example:
+            >>> R = Matrix.rotation(90)
+            >>> S = Matrix.scaling(2,1)
+            >>> R.multiply_matrix(S) # scale then rotate
+            >>> returns [[0, -1], [2, 0]]
+
+        """
+        if (self.cols != other.rows):
+            raise ValueError("Inner dimensions don't match")
+        product = []
+        for i in range(other.cols):
+            product.append(self.multiply_vector(Vector(other.get_column(i))).components)
+        toReturn = []
+        for row_index in range(len(product[0])):
+            new_row = []
+            for column in product:
+                new_row.append(column[row_index])
+            toReturn.append(new_row)
+        return Matrix(toReturn)
 
     @staticmethod
     def rotation(angle_degrees: float) -> 'Matrix':

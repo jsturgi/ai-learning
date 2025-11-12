@@ -86,7 +86,10 @@ Total Time: 2:10
 # Day 7 11/11
 Theory: 
 SVA: 2:45
+Imp:
+MatMult: 1:30
 
+Total: 4:15
 
 Week 1 Recap:
 
