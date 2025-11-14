@@ -137,7 +137,7 @@ class Matrix3D:
         
 
     @staticmethod
-    def rotation(angle_degrees: float, axis: str) -> 'Matrix':
+    def rotation(angle_degrees: float, axis: str) -> 'Matrix3D':
         """
         Create a 3D rotation matrix around the specified axis.
 
@@ -201,3 +201,61 @@ class Matrix3D:
                     row_n.append(0)
             rows.append(row_n)
         return Matrix3D(rows)
+
+    @staticmethod
+    def identity(size=3) -> 'Matrix3D':
+        """
+        Create an identy matrix of given size
+
+        Arg:
+            Size of matrix
+            
+        Return:
+            Identity Matrix
+        """
+        identity = [[1 if i == j else 0 for j in range(size)] for i in range(size)]
+
+        return Matrix3D(identity)
+    
+
+   
+
+m = Matrix3D([[1,0,0], [0,2,0],[0,0,3]])
+print(m)
+col1 = m.get_column(0)
+print(col1)
+v = Vector3D([1,2,3])
+m2 = m.multiply_vector(v)
+print(m2)
+m3 = m.multiply_matrix(m)
+print(m3)
+# Test rotation around z-axis by 90 degrees
+# Should rotate (1, 0, 0) to approximately (0, 1, 0)
+Rz = Matrix3D.rotation(90, "z")
+v = Vector3D([1, 0, 0])
+result = Rz.multiply_vector(v)
+print(result)  # Should be approximately [0, 1, 0
+Rx = Matrix3D.rotation(90, "x")
+result = Rx.multiply_vector(v)
+print(result)
+Ry = Matrix3D.rotation(90, "y")
+result = Ry.multiply_vector(v)
+print(result)
+
+# 3D scaling (what you originally wanted)
+S3 = Matrix3D.scaling(2, 3, 4)
+print(S3)
+print()
+
+# 4D scaling (just because you can!)
+S4 = Matrix3D.scaling(2, 3, 4, 5)
+print(S4)
+print()
+
+# Test it with a vector
+v = Vector3D([1, 1, 1])
+result = S3.multiply_vector(v)
+print(result)  # Should be [2, 3, 4]
+
+
+
