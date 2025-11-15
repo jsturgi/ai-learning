@@ -1,5 +1,6 @@
 import math
-class Vector3D:
+from vector import Vector
+class Vector3D(Vector):
     """
     3D Vector class
 
@@ -15,96 +16,7 @@ class Vector3D:
     def __init__(self, components):
         if (len(components)) != 3:
             raise ValueError("Must have exactly 3 components")
-        self.components = components
-        
-    def __repr__(self):
-        return f"Vector({self.components})"
-        
-    def __add__(self, other):
-        """ Add two vectors component-wise"""
-        if len(self.components) != len(other.components):
-            raise ValueError("Vectors must be the same dimension")
-        result = [a+b for a,b in zip(self.components, other.components)]
-        return Vector3D(result)
-        
-    def __mul__(self, scalar):
-        """Multiply vector by a scalar"""
-        result = [scalar * component for component in self.components]
-        return Vector3D(result)
-        
-    def magnitude(self):
-        """
-        Compute the length of the vector.
-
-        The magnitude of the vector determines the
-        distance from the  origin.
-
-        Returns:
-            float: magnitude
-        Formula:
-            Pythagorean Theorem: square root(a**2 + b**2 + c**2)
-        Example:
-            >>> v = Vector3D([3, 4, 0])
-            >>> v.magnitude()
-            5.0
-        """
-        # use pythagorean theorem
-        sum_of_squares = sum(c**2 for c in self.components)
-        return sum_of_squares ** .5
-        
-    def dot(self, other):
-        """
-        Computes the dot product with another vector.
-
-        The dot product is a measure of how aligned two vectors are.
-        If dot = 0, the vectors are perpendicular, and the angle is 90 degrees. If > 0, the 
-        vectors point in similar direction and the angle trends towards 0 degrees. If < 0, 
-        the vectors point in  opposite directions and the angle trends towards 180 degrees.
-
-        Args:
-            other: Vector3D to compute dot product with
-        
-        Returns:
-            Float Dot Product
-        
-        Formula:
-            |a| * |b| * cos(θ), a1*b1 + ... + ax*bx
-
-        Example:
-            >>> v1 = Vector3D([1, 0, 0])
-            >>> v2 = Vector3D([0, 1, 0])
-            >>> v1.dot(v2)
-            0  # Perpendicular vectors  
-        """
-        if len(self.components) != len(other.components):
-            raise ValueError("Vectors must be the same dimension")  
-        return sum(a*b for a,b in zip(self.components, other.components))
-        
-    def normalize(self):
-        """
-        Maintains vector direction while reducing magnitude to one.
-
-        Normalizing a vector transforms it into a unit vector. A unit
-        vector represents pure direction and can be scaled into any
-        magnitude.
-
-        Formula:
-            Each component / magnitude
-
-        Use Cases:
-            - Representing pure direction
-            - Normalizing Data for ML algorithms
-            - Lighting Calculation for Graphics/Game Engines
-        
-        Returns:
-            Vector3D unit vector (magnitude = 1) in the same direction
-
-        Example:
-            >>> v = Vector3D([3, 4, 0])
-            >>> v.normalize()
-            Vector3D([0.6, 0.8, 0.0])  # magnitude = 1
-        """
-        return Vector3D([component / self.magnitude() for component in self.components])
+        super().__init__(components)
 
     def cross(self, other):
         """
@@ -141,6 +53,10 @@ class Vector3D:
 
 
 # Cross Product Testing
+v1 = Vector3D([1, 2, 3])
+v2 = Vector3D([4, 5, 6])
+print(v1 + v2)
+print(v1.cross(Vector3D([0, 1, 0])))
 v1,v2 = Vector3D([2,0,0]), Vector3D([0,3,0])
 cross = v1.cross(v2)
 print(cross)

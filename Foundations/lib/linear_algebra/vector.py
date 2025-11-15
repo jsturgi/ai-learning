@@ -1,7 +1,3 @@
-"""
-Day 1: Vector Implementation from Scratch
-Goal: Understand Vectors by Building them ourselves
-"""
 import math
 
 
@@ -17,6 +13,15 @@ class Vector:
         if len(self.components) != len(other.components):
             raise ValueError("Vectors must be the same dimension")
         result = [a + b for a, b in zip(self.components, other.components)]
+        return Vector(result)
+    
+    def __sub__(self, other):
+        """
+        Subtract two vectors component-wise
+        """
+        if len(self.components) != len(other.components):
+            raise ValueError("Vectors are of different dimension!")
+        result = [a-b for a,b in zip(self.components, other.components)]
         return Vector(result)
 
     def __mul__(self, scalar):
