@@ -1,8 +1,9 @@
 import math
 from typing import List, Union
-from Vector3D import Vector3D
+from vector import Vector
+from matrix import Matrix
 
-class Matrix3D:
+class Matrix3D(Matrix):
     """
     Matrix3D Class representing linear transformations.
 
@@ -28,13 +29,12 @@ class Matrix3D:
             data: 2D list where each inner list is a row
                 ex: [[1,2], [3,4]] represents a 2x2 matrix.
         """
-        self.data = data
-        self.rows = len(data) #counts number of inner lists (rows)
-        self.cols = len(data[0]) if data else 0 # counts how many elements are in first row (columns). checks for empty matrix
-        if (self.rows < 3 or self.cols < 3):
-            raise ValueError("Matrix must at least be 3x3.")
-        if (self.rows != self.cols):
-            raise ValueError("Matrix not square")
+        super().__init__(data)
+        if self.rows != self.cols:
+            raise ValueError("Matrix must be square")
+        if self.rows != 3:
+            raise ValueError("Matrix must be 3D")
+        
 
     def __repr__(self) -> str:
         """
@@ -44,97 +44,6 @@ class Matrix3D:
             String like "Matrix3D([[1,2], [3,4])"
         """
         return f"Matrix3D({self.data})"
-    
-    def __str__(self) -> str:
-        """
-
-        Pretty print the matrix in readable format.
-
-        Returns:
-         Multi-line string with formatted matrix
-         Example:
-             [1.00, 2.00, 3.00]
-             [4.00, 5.00, 6.00]
-        """
-        rowstrings = []
-        for row in self.data:
-            rstring = ", ".join(f"{num:.2f}" for num in row)
-            rowstrings.append(rstring)
-
-        return "\n".join(rowstrings)
-
-    def get_column(self, col_index: int) -> Vector3D:
-        """
-        Extract a column as a vector.
-
-        Geometric: The i-th column shows where the i-th basis vector lands
-        after this transformation.
-
-        Args:
-            col_index: Which column to extract (0-indexed)
-        Returns:
-            Vector3D containing the column values
-        """
-        column = [row[col_index] for row in self.data]
-        return Vector3D(column)
-
-    def multiply_vector(self, vector: Vector3D) -> Vector3D:
-        """
-        Apply this transformation to a vector (matrix-vector multiplication
-
-        Geometric: Where does this vector land after the transformation 
-        represented by this matrix?
-
-        Math: Each component of result is a dot product of a matrix row
-        with the input vector.
-
-        Args:
-            vector: Vector3D
-        
-        Returns:
-            Vector3D
-        
-        Raises: ValueError: If matrix columns don't match vector dimension
-
-        Example:
-            >>>M = Matrix3D([[2,0, 0], [0,3, 0], [0,0,4)] #scale x by 2, y by 3, z by 4)
-            >>>v = Vector3D([1,1,1]) # returns Vector3D([2,3,4])
-        """
-        if (len(vector.components) != self.cols):
-            raise ValueError("Dimensions don't match columns")
-        result = [vector.dot(Vector3D(row)) for row in self.data]
-        return Vector3D(result)
-
-    def multiply_matrix(self, other: 'Matrix3D') -> 'Matrix3D':
-        """ 
-        Applies a transformation to the matrix.
-
-        Geometric interpretation: The returned matrix represents a composed transformation
-        that first applies other, then applies self.
-
-        Mathematical: Each component of the Matrix is a dot product of the original matrix's 
-        rows and the transformation matrix's columns.
-
-        Order: Order matters here. self * other != other * self.
-
-        Raises: ValueError: If Matrix Inner Dimensions don't match: mxn nxm works, nxm nxm does not.
-
-        """
-        if (self.cols != other.rows):
-            raise ValueError("Inner dimensions don't match")
-        product = []
-        for i in range(other.cols):
-            product.append(self.multiply_vector(other.get_column(i)).components)
-        toReturn = []
-        for row_index in range(len(product[0])):
-            new_row = []
-            for column in product:
-                new_row.append(column[row_index])
-            toReturn.append(new_row)
-        return Matrix3D(toReturn)
-                
-            
-        
 
     @staticmethod
     def rotation(angle_degrees: float, axis: str) -> 'Matrix3D':
@@ -173,66 +82,21 @@ class Matrix3D:
         
 
         return Matrix([r1,r2])
-
-    @staticmethod
-    def scaling(*scales) -> 'Matrix3D':
-        """
-        Create a nD scaling matrix.
-
-        Scales n coords by sn
-
-        Args:
-            *scales variable number of scale factors (one per dimension)
-
-        Returns:
-           nxn scaling matrix
-        """
-        n = len(scales)
-        rows = []
-
-        # [[scales[i] if i == j else 0 for j in range(n)]for i in range(n)] - nested list comprehension
-        
-        for i in range(n):
-            row_n = []
-            for j in range(n):
-                if i == j: 
-                    row_n.append(scales[i])
-                else:
-                    row_n.append(0)
-            rows.append(row_n)
-        return Matrix3D(rows)
-
-    @staticmethod
-    def identity(size=3) -> 'Matrix3D':
-        """
-        Create an identy matrix of given size
-
-        Arg:
-            Size of matrix
-            
-        Return:
-            Identity Matrix
-        """
-        identity = [[1 if i == j else 0 for j in range(size)] for i in range(size)]
-
-        return Matrix3D(identity)
-    
-
    
 
 m = Matrix3D([[1,0,0], [0,2,0],[0,0,3]])
 print(m)
 col1 = m.get_column(0)
 print(col1)
-v = Vector3D([1,2,3])
+v = Vector([1,2,3])
 m2 = m.multiply_vector(v)
 print(m2)
-m3 = m.multiply_matrix(m)
+m3 = m.__matmul__(m)
 print(m3)
 # Test rotation around z-axis by 90 degrees
 # Should rotate (1, 0, 0) to approximately (0, 1, 0)
 Rz = Matrix3D.rotation(90, "z")
-v = Vector3D([1, 0, 0])
+v = Vector([1, 0, 0])
 result = Rz.multiply_vector(v)
 print(result)  # Should be approximately [0, 1, 0
 Rx = Matrix3D.rotation(90, "x")
@@ -253,7 +117,7 @@ print(S4)
 print()
 
 # Test it with a vector
-v = Vector3D([1, 1, 1])
+v = Vector([1, 1, 1])
 result = S3.multiply_vector(v)
 print(result)  # Should be [2, 3, 4]
 

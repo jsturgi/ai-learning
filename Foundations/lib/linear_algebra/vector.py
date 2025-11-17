@@ -42,7 +42,7 @@ class Vector:
 
     def normalize(self):
         """Return a unit vector (magnitude = 1) in the same direction"""
-        return [component / self.magnitude() for component in self.components]
+        return Vector([component / self.magnitude() for component in self.components])
 
     def angle_between(self, other):
         """Calculate the angle between two vectors, return in degrees"""
@@ -60,3 +60,12 @@ class Vector:
         scalar = self.dot(unit)
         proj_v = unit * scalar
         return proj_v
+    
+    @staticmethod
+    def fill(n, value) -> 'Vector':
+        vectorList = []
+        for i in range(n):
+            vectorList.append(value)
+        return Vector(vectorList)
+
+

@@ -1,6 +1,6 @@
 import math
 from typing import List, Union
-from Vector3D import Vector3D
+from vector import Vector
 
 class Matrix:
     """
@@ -45,6 +45,15 @@ class Matrix:
         self.data = data
         self.rows = len(data)
         self.cols = len(data[0]) if data else 0
+    
+    def __repr__(self) -> str:
+        """
+        Return string representation for debugging.
+
+        Returns:
+            String like "Matrix3D([[1,2], [3,4])"
+        """
+        return f"Matrix({self.data})"
 
     
     def __str__(self) -> str:
@@ -65,7 +74,7 @@ class Matrix:
 
         return "\n".join(rowstrings)
     
-    def get_column(self, col_index: int) -> Vector3D:
+    def get_column(self, col_index: int) -> Vector:
         """
         Extract a column as a vector.
 
@@ -78,5 +87,133 @@ class Matrix:
             Vector3D containing the column values
         """
         column = [row[col_index] for row in self.data]
-        return Vector3D(column)
+        return Vector(column)
     
+    def __add__(self, other: 'Matrix') -> 'Matrix':
+        if (self.cols != other.cols or self.rows != other.rows):
+            raise ValueError("Inner Dimensions don't match. Invalid operation")
+        return Matrix([[x+y for x,y in zip(row_a, row_b)] for row_a,row_b in zip(self.data, other.data)])
+    
+    def __sub__(self, other: 'Matrix') -> 'Matrix':
+        if (self.cols != other.cols or self.rows != other.rows):
+            raise ValueError("Inner Dimensions don't match. Invalid operation")
+        return Matrix([[x-y for x,y in zip(row_a, row_b)] for row_a,row_b in zip(self.data, other.data)])
+    
+    def __matmul__(self, other: 'Matrix') -> 'Matrix':
+        """ 
+        Applies a transformation to the matrix.
+
+        Geometric interpretation: The returned matrix represents a composed transformation
+        that first applies other, then applies self.
+
+        Mathematical: Each component of the Matrix is a dot product of the original matrix's 
+        rows and the transformation matrix's columns.
+
+        Order: Order matters here. self * other != other * self.
+
+        Raises: ValueError: If Matrix Inner Dimensions don't match: mxn nxm works, nxm nxm does not.
+
+        """
+        if (self.cols != other.rows):
+            raise ValueError("Inner dimensions don't match")
+        product = []
+        for i in range(other.cols):
+            product.append(self.multiply_vector(other.get_column(i)).components)
+        toReturn = []
+        for row_index in range(len(product[0])):
+            new_row = []
+            for column in product:
+                new_row.append(column[row_index])
+            toReturn.append(new_row)
+        return Matrix(toReturn)
+
+    def multiply_vector(self, vector: Vector) -> Vector:
+        """
+        Apply this transformation to a vector (matrix-vector multiplication
+
+        Geometric: Where does this vector land after the transformation 
+        represented by this matrix?
+
+        Math: Each component of result is a dot product of a matrix row
+        with the input vector.
+
+        Args:
+            vector: Vector3D
+        
+        Returns:
+            Vector3D
+        
+        Raises: ValueError: If matrix columns don't match vector dimension
+
+        Example:
+            >>>M = Matrix3D([[2,0, 0], [0,3, 0], [0,0,4)] #scale x by 2, y by 3, z by 4)
+            >>>v = Vector3D([1,1,1]) # returns Vector3D([2,3,4])
+        """
+        if (len(vector.components) != self.cols):
+            raise ValueError("Dimensions don't match columns")
+        result = [vector.dot(Vector(row)) for row in self.data]
+        return Vector(result)
+    
+    def transpose(self) -> 'Matrix':
+        result = []
+        for i in range(self.cols):
+            result.append(self.get_column(i).components)
+        return Matrix(result)
+    
+    def power_iter(self, tolerance=0.00001, max_iter=1000):
+        """
+        Find the dominant eigenvalue and eigenvector using power iteration.
+
+        Args:
+            max_iter: Maximum number of iterations
+            tolerance: Convergence threshold
+        
+        Returns:
+            (eigenvalue, eigenvector) tuple
+        """
+        v = Vector.fill(self.cols, 1).normalize()
+
+        for i in range(max_iter):
+            new_v = self.multiply_vector(v).normalize()
+            if(new_v.dot(v) > 1 - tolerance):
+                print(f"Converged in {i+1} iterations")
+                v = new_v
+                break
+            v = new_v
+        eval = v.dot(self.multiply_vector(v))
+        return (eval, v)
+
+
+
+
+    
+    @staticmethod
+    def scaling(*scales) -> 'Matrix':
+      """
+        Create a nD scaling matrix.
+
+        Scales n coords by sn
+
+        Args:
+            *scales variable number of scale factors (one per dimension)
+
+        Returns:
+           nxn scaling matrix
+      """
+      n = len(scales)
+      rows = []
+      for i in range(n):
+          row_n=[]
+          for j in range(n):
+              if i == j:
+                  row_n.append(scales[i])
+              else:
+                  row_n.append(0)
+          rows.append(row_n)
+
+      return Matrix(rows)
+    
+    @staticmethod
+    def identity(size=3) -> 'Matrix':
+        identity = [[1 if i == j else 0 for j in range(size)] for i in range(size)]
+        return Matrix(identity)
