@@ -55,10 +55,9 @@ class Vector:
         """Project self onto other"""
         # Get unit vector
         other_norm = other.normalize()
-        unit = Vector(other_norm)
         # Get scalar by computing dot product of v1 (self) by normalized v2 (unit vector)
-        scalar = self.dot(unit)
-        proj_v = unit * scalar
+        scalar = self.dot(other_norm)
+        proj_v = other_norm * scalar
         return proj_v
     
     @staticmethod

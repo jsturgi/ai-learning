@@ -101,4 +101,7 @@ data/*
 #ignore trash
 *.trashinfo
 
+#ignore pdfs
+*.pdf
+
 

@@ -56,3 +56,13 @@ B = Matrix([[10, 0], [0, 1]])  # λ₁=10, λ₂=1, ratio=0.1
 eigenval, eigenvec = B.power_iter(tolerance=0.00001) 
 C = Matrix([[2, 0], [0, 1.9]])  # λ₁=2, λ₂=1.9, ratio=0.95
 eigenval, eigenvec = C.power_iter(tolerance=0.00001)
+
+print("\n=== Find Top K Eigenvalues Test ===")
+D = Matrix([
+    [5,0,0],
+    [0,3,0],
+    [0,0,1]
+])
+test = D.find_top_k_eigenvalues(3)
+print(test)
+print(test[0][1].dot(test[1][1]))

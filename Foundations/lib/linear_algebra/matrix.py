@@ -160,7 +160,7 @@ class Matrix:
             result.append(self.get_column(i).components)
         return Matrix(result)
     
-    def power_iter(self, tolerance=0.00001, max_iter=1000):
+    def power_iter(self, tolerance=0.00001, max_iter=1000, deflate_against=None):
         """
         Find the dominant eigenvalue and eigenvector using power iteration.
 
@@ -174,7 +174,11 @@ class Matrix:
         v = Vector.fill(self.cols, 1).normalize()
 
         for i in range(max_iter):
-            new_v = self.multiply_vector(v).normalize()
+            new_v = self.multiply_vector(v)
+            if deflate_against:
+                for vec in deflate_against:
+                    new_v = new_v -(new_v.projection(vec))
+            new_v = new_v.normalize()
             if(new_v.dot(v) > 1 - tolerance):
                 print(f"Converged in {i+1} iterations")
                 v = new_v
@@ -182,6 +186,39 @@ class Matrix:
             v = new_v
         eval = v.dot(self.multiply_vector(v))
         return (eval, v)
+    
+    def find_top_k_eigenvalues(self, k, tolerance=0.01, max_iter=1000):
+        eigenvalues = []
+        eigenvectors = []
+
+        for i in range(k):
+            val, vec = self.power_iter(deflate_against=eigenvectors)
+            eigenvalues.append(val)
+            eigenvectors.append(vec)
+        
+        toReturn = list(zip(eigenvalues, eigenvectors))
+        
+        return toReturn
+    
+    def determinant(self):
+        """
+        Computes determinant
+        """
+        if self.cols != self.rows:
+            raise ValueError("Not a square matrix. Determinant cannot be computed.")
+        match self.rows:
+            case 2:
+                a,b = self.data[0]
+                c,d = self.data[1]
+                return a*d - b*c
+            case 3:
+                a,b,c = self.data[0]
+                d,e,f = self.data[1]
+                g,h,i = self.data[2]
+                return a*(e*i-f*h) - b*(d*i-f*g) + c*(d*h-e*g)
+
+
+            
 
 
 
@@ -215,5 +252,14 @@ class Matrix:
     
     @staticmethod
     def identity(size=3) -> 'Matrix':
+        """
+        Creates an identity matrix using the dimension passed.
+
+        Args:
+            Size: Int - sets the dimension of the Identity matrix
+        
+        Returns:
+            Matrix - Identity Matrix
+        """
         identity = [[1 if i == j else 0 for j in range(size)] for i in range(size)]
         return Matrix(identity)
