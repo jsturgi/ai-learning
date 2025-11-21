@@ -66,3 +66,25 @@ D = Matrix([
 test = D.find_top_k_eigenvalues(3)
 print(test)
 print(test[0][1].dot(test[1][1]))
+
+print("\n=== Determinant Test===")
+i = Matrix.identity(5)
+print(i.determinant())
+diag = Matrix([[2,0,0,0], [0,3,0,0], [0,0,4,0], [0,0,0,5]])
+print(diag.determinant())
+zero = Matrix([[1,2,3], [0,0,0], [4,5,6]])
+print(zero.determinant())
+t2 = Matrix([[2, 1, 0, 0],
+   [1, 2, 1, 0],
+   [0, 1, 2, 1],
+   [0, 0, 1, 2]])
+print(t2.determinant())
+t3 = Matrix([[0, 1, 2],
+   [1, 2, 3],
+   [3, 1, 1]])
+print(t3.determinant())
+t4 = Matrix([[1, 2, 3],
+   [2, 4, 6],  # This row is 2× the first row!
+   [0, 1, 2]])
+print(t4.determinant())
+

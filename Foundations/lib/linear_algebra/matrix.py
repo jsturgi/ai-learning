@@ -204,6 +204,7 @@ class Matrix:
         """
         Computes determinant
         """
+       
         if self.cols != self.rows:
             raise ValueError("Not a square matrix. Determinant cannot be computed.")
         match self.rows:
@@ -216,6 +217,34 @@ class Matrix:
                 d,e,f = self.data[1]
                 g,h,i = self.data[2]
                 return a*(e*i-f*h) - b*(d*i-f*g) + c*(d*h-e*g)
+            case _: # row reduction
+                swaps = 0
+                matrix = [row.copy() for row in self.data]
+                for i in range(self.cols-1):
+                    if not matrix[i][i]: #zero pivot
+                        row_swap = None
+                        for k in range(i+1, self.rows): #search rows below pivot
+                            if matrix[k][i]:
+                                row_swap = k
+                                break
+                        if not row_swap:
+                            return 0 # all zeros, det 0
+                        matrix[row_swap], matrix[i] = matrix[i], matrix[row_swap]
+                        swaps+=1
+                    for j in range(i+1, self.rows):
+                        multiplier = matrix[j][i] / matrix[i][i]
+                        for col in range(self.cols):
+                            matrix[j][col] = matrix[j][col] - multiplier*matrix[i][col]
+                det = 1
+                for i in range(self.cols):
+                    det = det * matrix[i][i]
+                if swaps % 2 == 0:
+                    return det
+                else:
+                    return det*-1
+                            
+
+
 
 
             
