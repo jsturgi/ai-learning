@@ -6,7 +6,7 @@ services:
     ports:
       - "8888:8888"
     volumes:
-      - ./phase1:/workspace/phase1
+      - ./Foundations:/workspace/Foundations
       - ./phase2:/workspace/phase2
       - ./phase3:/workspace/phase3
       - ./phase4:/workspace/phase4
