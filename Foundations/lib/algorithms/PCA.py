@@ -2,10 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from typing import Optional, Tuple
 from matplotlib.patches import FancyArrowPatch
-import sys
-sys.path.append('../lib/linear_algebra')
-from matrix import Matrix
-from vector import Vector
 
 class PCA:
     """
@@ -76,10 +72,15 @@ class PCA:
         """
         self.mean_ = X.mean(axis=0)
         X_centered = X - self.mean_ #fit data onto mean
-        cov_matrix = X_centered.T@X_centered / X.shape[0] #compute covar matrix
-        cov_matrix = Matrix(cov_matrix.tolist())
-        eigenvalues, eigenvectors = zip(*cov_matrix.find_top_k_eigenvalues(self.n_components)) #find top eigenvectors/values
-        self.components_ = np.array([vec.components for vec in eigenvectors]) # create list of eigenvectors
+        cov_matrix = X_centered.T @ X_centered / X.shape[0]
+        # use numpys optimized eigenvalue solver for symmetric matrices
+        eigenvalues, eigenvectors = np.linalg.eigh(cov_matrix)
+        #eigh returns eigenvalues in ascending order, we want descending.
+        idx = eigenvalues.argsort()[::-1] #indices to sort descending
+        eigenvalues = eigenvalues[idx]
+        eigenvectorsd = eigenvectors[:,idx]
+        #keep only top n_components
+        eigenvalues = eigenvalues[:self.n_components] # transpose to match expected shape.
         self.explained_variance_ = np.array(eigenvalues) #get variance values from eigenvalues
         self.explained_variance_ratio_ = self.explained_variance_ / X_centered.var(axis=0).sum() #compute variance ratio
         return self
