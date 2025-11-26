@@ -78,9 +78,10 @@ class PCA:
         #eigh returns eigenvalues in ascending order, we want descending.
         idx = eigenvalues.argsort()[::-1] #indices to sort descending
         eigenvalues = eigenvalues[idx]
-        eigenvectorsd = eigenvectors[:,idx]
+        eigenvectors = eigenvectors[:,idx]
         #keep only top n_components
         eigenvalues = eigenvalues[:self.n_components] # transpose to match expected shape.
+        self.components_ = eigenvectors[:, :self.n_components].T
         self.explained_variance_ = np.array(eigenvalues) #get variance values from eigenvalues
         self.explained_variance_ratio_ = self.explained_variance_ / X_centered.var(axis=0).sum() #compute variance ratio
         return self
