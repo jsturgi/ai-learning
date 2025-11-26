@@ -84,3 +84,22 @@
 
 ## Time Spent
 ~ 6.5 hours (Total across multiple sessions including theory, implementation, and challenges)
+
+---
+
+## Knowledge Synthesis & Expansion
+
+### 1. Production ML Implications: Training-Serving Skew
+In a production environment, PCA is not just a data processing step; it is a **stateful artifact**.
+- **The Risk:** If you retrain your PCA on new data, the principal components might rotate or flip. If you serve a model trained on the *old* projection but feed it data transformed by the *new* PCA, the model will receive nonsense inputs (Training-Serving Skew).
+- **The Solution:** The PCA object (specifically `mean_` and `components_`) must be versioned and saved alongside the model weights. It is part of the model's "frozen" state.
+
+### 2. Optimization Theory Connection
+The "Whitening" challenge directly connects to future neural network studies.
+- **The Problem:** Without whitening, features have vastly different variances (e.g., [0, 1] vs [0, 1000]). This creates an error surface that looks like a long, narrow valley. Gradient Descent algorithms struggle here, bouncing off the walls and converging slowly.
+- **The Solution:** Whitening transforms the error surface into a symmetric "bowl." This allows optimization algorithms to slide directly to the bottom (minimum error) much faster. This is the intuition behind **Batch Normalization** in Deep Learning.
+
+### 3. The Curse of Dimensionality
+While 3D visualizations are helpful, high-dimensional space (10,000+ features) behaves differently.
+- **Sparsity:** As dimensions increase, the "volume" of the space explodes, and data points become incredibly sparse.
+- **Instability:** If `n_features` > `n_samples`, the covariance matrix becomes singular (determinant = 0). This means there are infinite possible solutions for the eigenvectors in the null space, making the PCA unstable without regularization techniques.
