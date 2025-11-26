@@ -104,4 +104,5 @@ data/*
 #ignore pdfs
 *.pdf
 
-
+#ignore journal folder
+journals/
