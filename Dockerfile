@@ -7,7 +7,8 @@ numpy \
 matplotlib \
 jupyter \
 pandas \
-scikit-learn
+scikit-learn \
+scipy
 
 # Expose Jupyter Port
 EXPOSE 8888
